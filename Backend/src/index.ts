@@ -1,4 +1,13 @@
 import express from "express";
-const app = express();
+import dotenv from 'dotenv'
+import connectDB from "./config/mongo.config";
 
-// 51.25
+const app = express();
+dotenv.config();
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    connectDB();
+    console.log('server is running on: ', PORT);
+});
