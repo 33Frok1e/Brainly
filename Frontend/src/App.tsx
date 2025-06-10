@@ -1,21 +1,20 @@
+import { PlusIcon } from "./components/icons/PlusIcon"
+import { ShareIcon } from "./components/icons/ShareIcon"
+import { Button } from "./components/ui/Button"
 
-import { Button } from "./components/ui/Button";
-
-function App() {
+const App = () => {
   return (
-    <div className="p-8 space-y-4">
-      <Button>Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="destructive">Destructive</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="link">Link</Button>
-      
-      <Button size="sm">Small</Button>
-      <Button size="lg">Large</Button>
-      
+    <div>
+
+      <Button 
+        startIcon={<PlusIcon size="md" />} 
+        endIcon={<ShareIcon size="md" />}
+        title={'share'} 
+        size="lg" 
+      />
+
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
