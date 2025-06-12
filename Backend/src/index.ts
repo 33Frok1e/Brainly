@@ -24,7 +24,7 @@ app.use(express.json());
 // Routes
 app.use('/api', routes)
 
-// error handling
+// TODO: Error handling
 
 const server = app.listen(config.port, () => {
   console.log(`Server running in ${config.env} mode on port ${config.port}`);
