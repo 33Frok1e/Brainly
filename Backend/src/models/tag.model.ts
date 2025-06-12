@@ -1,27 +1,21 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, model } from "mongoose";
+import { ITag } from "../interfaces/tag.interface";
 
-const tagSchema: Schema = new Schema(
+const tagSchema = new Schema<ITag>(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true,
+    name: { 
+      type: String, 
+      required: true 
     },
-    createdBy: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
+    createdBy: { 
+      type: Schema.Types.ObjectId, 
+      ref: "User", 
+      required: true 
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-// Ensure unique tag names per user
 tagSchema.index({ name: 1, createdBy: 1 }, { unique: true });
 
-const Tag = mongoose.model('Tag', tagSchema);
-
-export default Tag;
+export default model<ITag>("Tag", tagSchema);

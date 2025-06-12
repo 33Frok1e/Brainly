@@ -1,29 +1,32 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
+import { IShareLink } from '../interfaces/share.interface';
 
-const shareSchema: Schema = new Schema(
+const shareLinkSchema = new Schema<IShareLink>(
   {
-    linkId: {
-      type: String,
-      required: true,
-      unique: true,
+    linkId: { 
+      type: String, 
+      required: true, 
+      unique: true 
     },
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
+    owner: { 
+      type: Schema.Types.ObjectId, 
+      ref: 'User', 
+      required: true 
     },
     contentIds: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Content',
-      },
+      { 
+        type: Schema.Types.ObjectId, 
+        ref: 'Content' 
+      }
     ],
+    privacy: {
+      type: String,
+      enum: ['private', 'public'],
+      default: 'private',
+    },
+    active: { type: Boolean, default: true },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-const ShareableLink = mongoose.model('ShareableLink', shareSchema);
-
-export default ShareableLink;
+export default model<IShareLink>('ShareLink', shareLinkSchema);

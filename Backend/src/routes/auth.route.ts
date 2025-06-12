@@ -9,6 +9,6 @@ router.post('/login', loginUserController);
 
 router.post('/logout', logoutUserController);
 
-// TODO: Add /me router to check auth with middleware
+// TODO: Add '/me' router to check auth with middleware
 
 export default router;

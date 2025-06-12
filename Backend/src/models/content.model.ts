@@ -1,44 +1,36 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Schema, model } from "mongoose";
+import { IContent } from "../interfaces/content.interface";
 
-const contentTypes = ['twitter', 'youtube', 'gdocs', 'note', 'image', 'video', 'article', 'audio'];
-
-const contentSchema: Schema = new Schema(
+const contentSchema = new Schema<IContent>(
   {
     title: {
       type: String,
       required: true,
-      trim: true,
     },
     sourceType: {
       type: String,
-      enum: contentTypes,
       required: true,
+      enum: ["twitter", "youtube", "note"],
     },
     url: {
       type: String,
-      trim: true,
     },
     contentText: {
       type: String,
-      trim: true,
     },
     tags: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Tag',
+        ref: "Tag",
       },
     ],
     createdBy: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-const Content = mongoose.model('Content', contentSchema);
-
-export default Content;
+export default model<IContent>("Content", contentSchema);
