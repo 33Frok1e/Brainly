@@ -1,16 +1,37 @@
 import express from "express";
-import dotenv from 'dotenv'
-import connectDB from "./config/mongo.config";
-import authRoutes from './routes/auth.route'
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import config from "./config/env";
+import connectDB from "./config/db";
+import routes from './routes'
 
 const app = express();
-dotenv.config();
 
-const PORT = process.env.PORT || 5000;
+// Database connection
+connectDB();
 
-app.use('/api/v1/auth', authRoutes)
+// Middlewares
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.listen(PORT, () => {
-    connectDB();
-    console.log('server is running on: ', PORT);
+// Routes
+app.use('/api', routes)
+
+// error handling
+
+const server = app.listen(config.port, () => {
+  console.log(`Server running in ${config.env} mode on port ${config.port}`);
+});
+
+// Handle unhandled promise rejections
+process.on("unhandledRejection", (err: Error) => {
+  console.error(`Error: ${err.message}`);
+  server.close(() => process.exit(1));
 });
