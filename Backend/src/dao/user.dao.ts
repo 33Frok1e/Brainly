@@ -13,9 +13,14 @@ const createUser = async (userData: Partial<IUser>): Promise<IUser> => {
 
 const getUserByEmail = async (email: string): Promise<IUser | null> => {
     return User.findOne({ email });
+};
+
+const getUserById = async (id: string): Promise<IUser | null> => {
+    return User.findById(id);
 }
 
 export default {
     createUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserById
 }

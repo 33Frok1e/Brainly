@@ -29,7 +29,7 @@ export const signUpController = async (req: Request, res: Response, next: NextFu
                 // Password shouldn't be sent
                 avatarUrl: user.avatarUrl
             }
-        })
+        }, 'Registerd Successfully!')
     } catch(e) {
         next(e)
     }
@@ -60,7 +60,7 @@ export const signInController = async (req: Request, res: Response, next: NextFu
                 email: user.email,
                 avatarUrl: user.avatarUrl
             }
-        });
+        }, 'Logged in Succesfully!');
     } catch(e) {
         next(e)
     }
@@ -71,6 +71,26 @@ export const logoutController = (req: Request, res: Response) => {
     successResponse(res, null, 'Logged out successfully!')
 }
 
-export const getCurrentUser = (req: Request, res: Response) => {
-    console.log("User Fetched!");
-}
+export const getCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user?.id) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'Not Authenticated');
+      }
+
+      const user = await userDao.getUserById(req.user.id);
+      if (!user) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+      }
+  
+      successResponse(res, {
+        user: {
+          id: user.id,
+          fullName: user.fullName,
+          email: user.email,
+          avatarUrl: user.avatarUrl,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+};
