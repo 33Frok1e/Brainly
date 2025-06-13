@@ -1,14 +1,11 @@
 import express from 'express'
-import { loginUserController, logoutUserController, registerUserController } from '../controllers/auth.controller';
+import { getCurrentUser, logoutController, signInController, signUpController } from '../controllers/auth.controller';
 
 const router = express.Router();
 
-router.post('/register', registerUserController);
-
-router.post('/login', loginUserController);
-
-router.post('/logout', logoutUserController);
-
-// TODO: Add '/me' router to check auth with middleware
+router.post('/signup', signUpController);
+router.post('/signin', signInController);
+router.post('/logout', logoutController);
+router.get('/me', getCurrentUser);
 
 export default router;

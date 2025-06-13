@@ -4,6 +4,7 @@ import cors from "cors";
 import config from "./config/env";
 import connectDB from "./config/db";
 import routes from './routes'
+import { errorHandler } from "./middlewares/error.middleware";
 
 const app = express();
 
@@ -24,7 +25,8 @@ app.use(express.json());
 // Routes
 app.use('/api', routes)
 
-// TODO: Error handling
+// Error handling
+app.use(errorHandler)
 
 const server = app.listen(config.port, () => {
   console.log(`Server running in ${config.env} mode on port ${config.port}`);

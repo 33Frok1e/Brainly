@@ -29,4 +29,7 @@ const shareLinkSchema = new Schema<IShareLink>(
   { timestamps: true }
 );
 
-export default model<IShareLink>('ShareLink', shareLinkSchema);
+const ShareLink = mongoose.model<IShareLink>('ShareLink', shareLinkSchema);
+export default ShareLink;
+
+// export default model<IShareLink>('ShareLink', shareLinkSchema);

@@ -18,4 +18,7 @@ const tagSchema = new Schema<ITag>(
 
 tagSchema.index({ name: 1, createdBy: 1 }, { unique: true });
 
-export default model<ITag>("Tag", tagSchema);
+const Tag = mongoose.model<ITag>('Tag', tagSchema);
+export default Tag;
+
+// export default model<ITag>("Tag", tagSchema);

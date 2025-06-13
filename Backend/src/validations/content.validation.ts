@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 const sourceType = z.enum(['twitter', 'youtube', 'note'])
 
-export const createContent = z.object({
+export const createContentValidation = z.object({
     body: z.object({
         title: z.string().min(1, 'Title is required'),
         sourceType: sourceType,
@@ -12,7 +12,8 @@ export const createContent = z.object({
     }),
 });
 
-export const updateContent = z.object({
+// Updating content is not our included feature
+export const updateContentValidation = z.object({
     body: z.object({
       title: z.string().min(1, 'Title is required').optional(),
       sourceType: sourceType.optional(),
@@ -22,7 +23,7 @@ export const updateContent = z.object({
     }),
 });
 
-export const getContents = z.object({
+export const getContentsValidation = z.object({
     query: z.object({
       limit: z.preprocess(Number, z.number().min(1).max(100).default(10)),
       cursor: z.string().optional(),

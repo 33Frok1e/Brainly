@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { IContent } from "../interfaces/content.interface";
 
 const contentSchema = new Schema<IContent>(
@@ -33,4 +33,7 @@ const contentSchema = new Schema<IContent>(
   { timestamps: true }
 );
 
-export default model<IContent>("Content", contentSchema);
+const Content = mongoose.model<IContent>('Content', contentSchema);
+export default Content;
+
+// export default model<IContent>("Content", contentSchema);

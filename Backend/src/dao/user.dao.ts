@@ -1,11 +1,16 @@
-import { IUser, IUserDocument } from "../interfaces/user.interface";
-import User from "../models/user.model"
+import { IUser } from "../interfaces/user.interface";
+import User from "../models/user.model";
+import ApiError from "../utils/apiError";
+import httpStatus from 'http-status'
 
-export const findUserByEmail = async (email: string): Promise<IUserDocument | null> => {
-    return await User.findOne({ email }).select('+password');
-}
+const createUser = async (userData: Partial<IUser>): Promise<IUser> => {
+    const existingUser = await User.findOne({ email: userData.email})
+    if(existingUser) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Email is already taken');
+    }
+    return User.create(userData);
+};
 
-export const createUser = async (userData: IUser) => {
-    const user = new User(userData)
-    return await user.save();
+export default {
+    createUser
 }

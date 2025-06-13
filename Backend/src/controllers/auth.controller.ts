@@ -1,22 +1,46 @@
-import { Request, Response } from "express";
-import { RegisterInput } from "../utils/validations";
+import { Request, Response, NextFunction } from "express";
+import { signupValidation } from "../validations/auth.validation";
+import userDao from "../dao/user.dao";
+import { generateToken } from "../services/token.service";
+import { cookieOptions } from "../utils/cookieOptions";
+import { successResponse } from "../utils/apiResponse";
 
-export const registerUserController = async (req: Request, res: Response) => {
+export const signUpController = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const { body } = await signupValidation.parseAsync(req)
 
-        const { email, username, password }: RegisterInput = req.body
-        // const { token, user } = registerUserService(email, username, password);
+        const user = await userDao.createUser({
+            fullName: body.fullName,
+            email: body.email,
+            passwordHash: body.password
+        });
 
+        const token = generateToken({ userId: user.id});
+
+        res.cookie('accessToken', token, cookieOptions);
+
+        successResponse(res, {
+            user: {
+                id: user.id,
+                fullName: user.fullName,
+                email: user.email,
+                // passwordHash: user.passwordHash --> Password shouldn't be sent
+                avatarUrl: user.avatarUrl
+            }
+        })
     } catch(e) {
-        console.error(`Registration error: ${e}`);
-        res.status(500).json({ message: 'Registration Failed!'})
+        next(e)
     }
 };
 
-export const loginUserController = (req: Request, res: Response) => {
+export const signInController = (req: Request, res: Response) => {
     console.log("login successfully !")
 };
 
-export const logoutUserController = (req: Request, res: Response) => {
+export const logoutController = (req: Request, res: Response) => {
     console.log("logout successfully !")
+}
+
+export const getCurrentUser = (req: Request, res: Response) => {
+    console.log("User Fetched!");
 }
