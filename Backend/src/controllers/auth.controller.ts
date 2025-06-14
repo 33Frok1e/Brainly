@@ -69,7 +69,7 @@ export const signInController = async (req: Request, res: Response, next: NextFu
 export const logoutController = (req: Request, res: Response) => {
     res.clearCookie('accessToken');
     successResponse(res, null, 'Logged out successfully!')
-}
+};
 
 export const getCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
     try {

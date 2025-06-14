@@ -8,8 +8,8 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     let token;
     
     // Check for token in cookies first
-    if (req.cookies?.token) {
-      token = req.cookies.token;
+    if (req.cookies?.accessToken) {
+      token = req.cookies.accessToken;
     }
     
     // If not in cookies, check Authorization header
@@ -18,12 +18,16 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (!token) {
-      throw new ApiError(httpStatus.UNAUTHORIZED, 'Not Authenticated');
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Not authenticated');
     }
 
-    const decoded = verifyToken(token);
-    req.user = { id: decoded.userId };
-    next();
+    try {
+      const decoded = verifyToken(token);
+      req.user = { id: decoded.userId };
+      next();
+    } catch (error) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid token');
+    }
   } catch (error) {
     next(error);
   }
