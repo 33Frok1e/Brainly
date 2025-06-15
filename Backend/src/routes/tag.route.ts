@@ -8,8 +8,8 @@ const router = express.Router();
 
 router.use(auth);
 
-router.post('/', validate(createTagValidation), createTagController);
-// router.get('/', tagController.getTags);
-// router.delete('/:id', tagController.deleteTag);
+router.post('/create-tag', validate(createTagValidation), createTagController);
+router.get('/tags', getTagsController);
+router.delete('/delete-tag/:id', deleteTagController);
 
 export default router;

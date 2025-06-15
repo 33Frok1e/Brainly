@@ -4,7 +4,6 @@ import contentRoute from './content.route'
 import tagRoute from './tag.route'
 import shareRoute from './share.route'
 
-
 const router = express.Router();
 
 router.use('/auth', authRoute);
