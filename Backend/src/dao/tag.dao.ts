@@ -15,6 +15,25 @@ const createTag = async (tagData: ICreateTag): Promise<ITag> => {
     }
 };
 
+const getTagsByUser = async (userId: string): Promise<ITag[]> => {
+    const tags = await Tag.find({ createdBy: userId });
+    return tags || [];
+};
+
+const getTagById = async (id: string): Promise<ITag | null> => {
+  return await Tag.findById(id);
+};
+
+const deleteTagById = async (id: string): Promise<void> => {
+  const tag = await Tag.findByIdAndDelete(id);
+  if (!tag) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Tag not found');
+  }
+};
+
 export default {
-    createTag
+    createTag,
+    getTagsByUser,
+    getTagById,
+    deleteTagById
 }
